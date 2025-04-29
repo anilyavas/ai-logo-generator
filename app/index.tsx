@@ -1,3 +1,4 @@
+import { MaterialIcons } from '@expo/vector-icons';
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import {
@@ -6,18 +7,27 @@ import {
   TextInput,
   SafeAreaView,
   Pressable,
-  ScrollView,
   StyleSheet,
   StatusBar,
   Platform,
+  Image,
+  FlatList,
 } from 'react-native';
+
 export default function Home() {
+  const logo = [
+    { title: 'No Style', logo: '' },
+    { title: 'Abstract', logo: require('../assets/logo/abstract.png') },
+    { title: 'Monogram', logo: require('../assets/logo/monogram.png') },
+    { title: 'Mascot', logo: require('../assets/logo/mascot.png') },
+  ];
   return (
     <View className="flex-1">
       <LinearGradient style={{ flex: 1 }} colors={['#09090B', '#1C55FF', '#C26CFF', '#09090B']}>
         <BlurView intensity={210} style={StyleSheet.absoluteFill} tint="dark">
           <SafeAreaView
-            style={{ paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0 }}>
+            style={{ paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0 }}
+            className="flex-1">
             <View className="items-center p-2">
               <Text className="text-lg font-extrabold text-[#FAFAFA]">AI Logo</Text>
             </View>
@@ -27,18 +37,55 @@ export default function Home() {
                 <Text className="text-sm text-[#FAFAFA]">Surprise Me</Text>
               </Pressable>
             </View>
-            <View className="m-4 h-2/5  justify-between rounded-lg bg-[#27272A] p-2">
+            <View className="m-4 h-2/5  justify-between rounded-lg bg-[#27272A] p-4">
               <TextInput
                 placeholder="A blue lion logo reading ‘HEXA’ in bold letters"
                 placeholderTextColor="#71717A"
-                style={{ color: '#FAFAFA' }}
+                style={{ color: '#FAFAFA', fontSize: 17 }}
               />
-              <Text className="text-sm text-[#71717A]/15">0/50</Text>
+              <Text className="text-sm text-[#71717A]">0/50</Text>
             </View>
-            <View className="p-6">
+            <View className="flex-1 gap-4 p-6">
               <Text className="text-2xl font-extrabold text-[#FAFAFA]">Logo Styles</Text>
+              <FlatList
+                data={logo}
+                horizontal
+                contentContainerClassName="gap-6"
+                showsHorizontalScrollIndicator={false}
+                renderItem={({ item }) => (
+                  <Pressable key={item.title} className="items-center gap-2">
+                    {item.logo === '' ? (
+                      <View
+                        style={{
+                          width: 90,
+                          height: 90,
+                          borderColor: 'white',
+                          borderWidth: 1,
+                          borderRadius: 10,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}>
+                        <MaterialIcons name="block" size={30} color="#FAFAFA" />
+                      </View>
+                    ) : (
+                      <Image
+                        source={item.logo}
+                        style={{
+                          width: 90,
+                          height: 90,
+                          borderColor: 'white',
+                          borderWidth: 1,
+                          borderRadius: 10,
+                        }}
+                      />
+                    )}
+
+                    <Text className="text-[#FAFAFA]">{item.title}</Text>
+                  </Pressable>
+                )}
+              />
             </View>
-            <Pressable className="w-full px-10">
+            <Pressable className="w-full px-6 pb-4">
               <LinearGradient
                 colors={['#2938DC', '#943DFF']}
                 style={{ borderRadius: 30 }}
