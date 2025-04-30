@@ -64,11 +64,13 @@ export default function Home() {
               <TextInput
                 value={prompt}
                 onChangeText={setPrompt}
+                multiline
+                maxLength={500}
                 placeholder="A blue lion logo reading 'HEXA' in bold letters"
                 placeholderTextColor="#71717A"
                 style={{ color: '#FAFAFA', fontSize: 17 }}
               />
-              <Text className="text-sm text-[#71717A]">0/500</Text>
+              <Text className="text-sm text-[#71717A]">{prompt.length}/500</Text>
             </View>
             <View className="flex-1 gap-4 p-6">
               <Text className="text-2xl font-extrabold text-[#FAFAFA]">Logo Styles</Text>
@@ -106,7 +108,7 @@ export default function Home() {
                             height: 90,
                             borderColor: isSelected ? 'red' : 'transparent',
                             borderWidth: isSelected ? 2 : 0,
-                            borderRadius: 10,
+                            borderRadius: 16,
                           }}
                         />
                       )}
