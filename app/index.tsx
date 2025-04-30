@@ -1,6 +1,7 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Link } from 'expo-router';
 import { useState } from 'react';
 import {
   View,
@@ -28,14 +29,27 @@ const logoStyle = [
 export default function Home() {
   const [selectedTitle, setSelectedTitle] = useState('No Style');
   const [prompt, setPrompt] = useState('');
+  const [url, setUrl] = useState('');
   const [loading, setLoading] = useState(false);
+  const [isReady, setIsReady] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
   const generateLogo = async () => {
     if (!prompt.trim()) {
       alert('Please enter a prompt');
+      return;
     }
-
     setLoading(true);
+    try {
+      const imageUrl = await createLogo(prompt, selectedTitle);
+      setUrl(imageUrl);
+      setIsReady(true);
+    } catch (error) {
+      console.error('Logo generation failed:', error);
+      setHasError(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -49,7 +63,7 @@ export default function Home() {
               <Text className="text-lg font-extrabold text-[#FAFAFA]">AI Logo</Text>
             </View>
             {loading && (
-              <View className="m-4 flex-row bg-[#27272A]">
+              <View className="m-4 flex-row rounded-md bg-[#27272A]">
                 <ActivityIndicator
                   size="large"
                   style={{ backgroundColor: '#18181B', width: 70, height: 70 }}
@@ -61,6 +75,55 @@ export default function Home() {
                   <Text className="text-sm font-semibold text-[#71717A]">Ready in 2 minutes</Text>
                 </View>
               </View>
+            )}
+            {!loading && isReady && url && (
+              <Link
+                href={{
+                  pathname: '/result',
+                  params: { prompt, style: selectedTitle, imageUrl: url },
+                }}
+                asChild>
+                <Pressable className="m-4 flex-row items-center overflow-hidden rounded-xl">
+                  <Image
+                    source={{ uri: url }}
+                    style={{
+                      width: 70,
+                      height: 70,
+                      borderTopLeftRadius: 12,
+                      borderBottomLeftRadius: 12,
+                    }}
+                  />
+                  <LinearGradient
+                    colors={['#2938DC', '#943DFF']}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 0 }}
+                    style={{
+                      flex: 1,
+                      paddingVertical: 16,
+                      paddingHorizontal: 20,
+                      borderTopRightRadius: 12,
+                      borderBottomRightRadius: 12,
+                    }}>
+                    <Text className="text-lg font-extrabold text-white">Your Design is Ready!</Text>
+                    <Text className="text-sm font-medium text-white/80">Tap to see it.</Text>
+                  </LinearGradient>
+                </Pressable>
+              </Link>
+            )}
+            {!loading && hasError && (
+              <Pressable
+                onPress={generateLogo}
+                className="m-4 flex-row items-center overflow-hidden rounded-xl">
+                <View className="h-[70px] w-[70px] items-center justify-center bg-[#EF4444]/70">
+                  <MaterialIcons name="error-outline" size={30} color="#fff" />
+                </View>
+                <View className="h-[70px] flex-1 bg-[#EF4444] px-4 py-3">
+                  <Text className="text-base font-extrabold text-white">
+                    Oops, something went wrong!
+                  </Text>
+                  <Text className="text-sm font-medium text-white/80">Click to try again.</Text>
+                </View>
+              </Pressable>
             )}
             <View className="mx-4 flex-row items-center justify-between p-2">
               <Text className="text-2xl font-extrabold text-[#FAFAFA]">Enter Your Prompt</Text>

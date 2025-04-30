@@ -1,5 +1,3 @@
-// lib/createLogo.ts
-
 import { saveToFirestore } from './fireStore';
 
 export const createLogo = async (prompt: string, style: string) => {
