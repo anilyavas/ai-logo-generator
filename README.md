@@ -44,6 +44,10 @@ A simple mobile app that uses OpenAI's image generation model to create logos ba
 - **Firebase Firestore**: For storing generated logos and metadata.
 - **Tailwind CSS** (via `nativewind`): For rapid and responsive styling.
 
+## Demo
+
+![App Demo](https://github.com/user-attachments/assets/2d4ad826-6d00-4c72-be55-e8d170e13408)
+
 ## Author
 
 - Developed by **ANIL YAVAŞ**
