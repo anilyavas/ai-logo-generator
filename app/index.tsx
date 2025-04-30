@@ -16,19 +16,27 @@ import {
   ActivityIndicator,
 } from 'react-native';
 
+import { createLogo } from '~/utils/createLogo';
+
+const logoStyle = [
+  { title: 'No Style', logo: '' },
+  { title: 'Monogram', logo: require('../assets/logo/monogram.png') },
+  { title: 'Abstract', logo: require('../assets/logo/abstract.png') },
+  { title: 'Mascot', logo: require('../assets/logo/mascot.png') },
+];
+
 export default function Home() {
   const [selectedTitle, setSelectedTitle] = useState('No Style');
   const [prompt, setPrompt] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const createLogo = async () => {};
+  const generateLogo = async () => {
+    if (!prompt.trim()) {
+      alert('Please enter a prompt');
+    }
 
-  const logo = [
-    { title: 'No Style', logo: '' },
-    { title: 'Monogram', logo: require('../assets/logo/monogram.png') },
-    { title: 'Abstract', logo: require('../assets/logo/abstract.png') },
-    { title: 'Mascot', logo: require('../assets/logo/mascot.png') },
-  ];
+    setLoading(true);
+  };
 
   return (
     <View className="flex-1">
@@ -75,7 +83,7 @@ export default function Home() {
             <View className="flex-1 gap-4 p-6">
               <Text className="text-2xl font-extrabold text-[#FAFAFA]">Logo Styles</Text>
               <FlatList
-                data={logo}
+                data={logoStyle}
                 horizontal
                 contentContainerClassName="gap-6"
                 showsHorizontalScrollIndicator={false}
@@ -118,7 +126,7 @@ export default function Home() {
                 }}
               />
             </View>
-            <Pressable className="w-full px-6 pb-4" onPress={createLogo}>
+            <Pressable className="w-full px-6 pb-4" onPress={generateLogo}>
               <LinearGradient
                 colors={['#2938DC', '#943DFF']}
                 style={{ borderRadius: 30 }}
