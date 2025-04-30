@@ -46,7 +46,7 @@ A simple mobile app that uses OpenAI's image generation model to create logos ba
 
 ## Demo
 
-![App Demo](https://github.com/user-attachments/assets/2d4ad826-6d00-4c72-be55-e8d170e13408)
+https://github.com/user-attachments/assets/2d4ad826-6d00-4c72-be55-e8d170e13408
 
 ## Author
 
